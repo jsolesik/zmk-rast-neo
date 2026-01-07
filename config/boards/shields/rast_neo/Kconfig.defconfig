@@ -8,7 +8,7 @@ config ZMK_USB
 	default y
 
 config ZMK_KEYBOARD_NAME
-	default "The RAST:NEO KBD by JSO ver ENPL"
+	default "RAST:NEO"
 
 config ZMK_SPLIT
 	default y
