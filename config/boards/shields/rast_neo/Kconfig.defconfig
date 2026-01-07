@@ -1,0 +1,17 @@
+# Copyright (c) 2020 The ZMK Contributors
+# SPDX-License-Identifier: MIT
+
+config ZMK_BLE
+	default y
+
+config ZMK_USB
+	default y
+
+config ZMK_KEYBOARD_NAME
+	default "The RAST:NEO KBD by JSO ver ENPL"
+
+config ZMK_SPLIT
+	default y
+
+#config ZMK_SPLIT_BLE_ROLE_CENTRAL
+#	default y

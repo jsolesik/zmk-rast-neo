@@ -16,6 +16,15 @@
 #define SYS   6
 #define CTRL  7
 
+&mt {
+    tapping-term-ms = <201>;
+    flavor = "tap-preferred";
+ };
+&sk {
+     release-after-ms = <2000>;
+     quick-release;
+ };
+
 &uc {
   default-mode = <UC_MODE_LINUX>;  // Default to Linux input system
   minimum-length = <0>;            // Set to desired minimum input length

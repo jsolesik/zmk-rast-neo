@@ -1,0 +1,8 @@
+# Copyright (c) 2020 The ZMK Contributors
+# SPDX-License-Identifier: MIT
+
+config SHIELD_RAST_NEO_LEFT
+	def_bool $(shields_list_contains,rast_neo_left)
+
+config SHIELD_RAST_NEO_RIGHT
+	def_bool $(shields_list_contains,rast_neo_right)
