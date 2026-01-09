@@ -1,0 +1,176 @@
+;; This is RAST:NEO keyboard layout mapping fo KANATA tool.
+;; Below is base definition of MAD DOG GK850W keyboard.
+;; Change it for your needs.
+;; KANATA configuration documentation: https://github.com/jtroo/kanata/blob/main/docs/config.adoc
+(defcfg 
+  process-unmapped-keys yes
+  concurrent-tap-hold yes
+)
+
+(defsrc
+  esc  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet lalt           spc            ralt rctl menu
+)
+
+(deflayer qwerty
+  @esc  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet lalt           spc            ralt rctl menu
+)
+
+(defchordsv2
+  (a s) esc 100 all-released (qwerty alpha2 numeric symbols1 symbols2 system)
+  (a s d) tab 100 all-released (qwerty alpha2 numeric symbols1 symbols2 system)
+  (l ; ') bspc 100 all-released (qwerty alpha2 numeric symbols1 symbols2 system)
+  (; ') del 100 all-released (qwerty alpha2 numeric symbols1 symbols2 system)
+  (, . /) ret 50 all-released (qwerty alpha2 numeric symbols1 symbols2 system)
+  (z x c) (one-shot-release-pcancel 2000 lalt) 100 all-released ()
+  (s ;) caps 100 all-released (qwerty alpha2 numeric symbols1 symbols2 system)
+  (lsft rsft) (layer-switch numeric) 100 all-released (qwerty alpha2 numeric symbols1 symbols2 system)
+  (c ,) (layer-switch system) 100 all-released (qwerty alpha2 numeric symbols1 symbols2 system)
+  (lalt ralt) lmet 100 all-released (qwerty alpha2 numeric symbols1 symbols2 system)
+)
+
+(defchords numeric 50
+  (, .) =
+  (,  ) 4 
+  (  .) 5 
+)
+
+;;(defchords symbols1 50
+;;  (a s) (macro S-9 S-0) 
+;;  (d l) (macro [ ]) 
+;;  (; ') (macro S-[ S-]) 
+;;)
+
+;;(defchords symbols2 50
+;;  (a s) (macro S-, S-.) 
+;;  (s d) (macro = S-.) 
+;;  (l ') (macro S-4 S-1)
+;;  (d l) (macro S-1 =)
+;;  (c ,) (macro - S-.) 
+;;)
+
+(defalias
+  esc_clicks (tap-dance 200 (esc grv S-grv))
+  esc (tap-hold 200 200 @esc_clicks (layer-while-held layers))
+
+  neo (layer-switch neo)
+  qwr (layer-switch qwerty)
+
+  ;; --- Rast Neo Aliases ---
+
+  ;; Homerow Mods (Alpha 1) - Tap: Key, Hold: Mod
+  hm_c (tap-hold-release 200 300 c ralt)
+  hm_z (tap-hold-release 200 300 z lsft)
+  hm_d (tap-hold-release 200 300 d lctl)
+  hm_h (tap-hold-release 200 300 h rctl)
+  hm_l (tap-hold-release 200 300 l rsft)
+  hm_w (tap-hold-release 200 300 w ralt)
+
+  ;; Homerow Layers (Alpha 1) - Tap: Key, Hold: Layer
+  hl_r (tap-hold-release 200 220 r (layer-toggle numeric))
+  hl_a (tap-hold-release 200 220 a (layer-toggle symbols1))
+  hl_s (tap-hold-release 200 220 s (layer-toggle symbols2))
+  hl_t (tap-hold-release 200 220 t (layer-toggle system))
+  hl_n (tap-hold-release 200 220 n (layer-toggle system))
+  hl_e (tap-hold-release 200 220 e (layer-toggle symbols2))
+  hl_o (tap-hold-release 200 220 o (layer-toggle symbols1))
+  hl_i (tap-hold-release 200 220 i (layer-toggle numeric))
+
+  ;; Thumbs & Special
+  meh_spc (tap-hold 200 200 spc (multi lsft lctl lalt))
+  sl_al2  (tap-hold-release 200 220 (one-shot 2000 (layer-toggle alpha2)) (layer-toggle alpha2))
+  sl_func (one-shot 2000 (layer-toggle func))
+  mo_func (tap-hold 200 200 ret (layer-toggle func))
+  to_neo  (layer-switch neo)
+  sr_sft  (tap-hold 200 200 (layer-switch neo) lsft) ;; Retro-tap shift/layer switch
+  mt_sys  (tap-hold 200 200 menu lmet)
+
+  ;; Tap Dance & Macros
+  0 0 
+  cdc  (tap-dance 190 (, . S-;))
+  sdq  (tap-dance 190 (' S-'))
+  vcx  (tap-dance 190 (C-v C-c C-x))
+  zzz  (tap-hold 200 190 @0 (macro @0 @0 @0))
+  dpar (tap-hold 200 190 S-0 (macro S-9 S-0 left)) ;; ) -> () left
+  dbkt (tap-hold 200 190 ] (macro [ ] left))       ;; ] -> [] left
+  dbrc (tap-hold 200 190 S-] (macro S-[ S-] left)) ;; } -> {} left
+  fstr (tap-hold 200 190 = (macro f S-' S-' left)) ;; = -> f"" left
+
+  ;; Auto Shift / Dual Keys
+  as_nl (tap-hold 135 135 S-8 /) ;; * /
+  as_nr (tap-hold 135 135 S-= -) ;; + -
+
+  cn4 (chord numeric ,)
+  cn5 (chord numeric .)
+)
+
+(deflayer layers
+  _    @qwr @neo lrld _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _              _              _    _    _
+)
+
+(deflayer neo
+  @esc XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   @hm_c @hm_z @hm_d   XX   XX   XX   XX   XX   @hm_h @hm_l @hm_w XX  
+  @hl_r @hl_a @hl_s @hl_t  XX   XX   XX   XX   @hl_n @hl_e @hl_o @hl_i 
+  XX   XX   @meh_spc       XX             @sl_al2   XX   XX
+)
+
+(deflayer alpha2
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   v    x    m    XX   XX   XX   XX   XX   u    y    p    XX
+  q    b    f    g    XX   XX   XX   XX   k    @cdc j    @sdq
+  XX   XX   @meh_spc       XX        @sl_func  XX   XX
+)
+
+(deflayer numeric
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   7    8    9    XX   XX   XX   XX   XX   @zzz .    ,    XX 
+  @as_nl 1  2    3    XX   XX   XX   XX   @cn4 @cn5 6    @as_nr 
+  XX   XX   @sr_sft        XX        @mo_func XX   XX
+)
+
+(deflayer func
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   f7   f8   f9   XX   XX   XX   XX   XX   f10  f11  f12  XX   
+  @as_nl f1 f2   f3   XX   XX   XX   XX   f4   f5   f6   @as_nr 
+  XX   XX   @sr_sft        XX            lalt XX   XX
+)
+
+(deflayer symbols1
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   S-9  @dpar [   XX   XX   XX   XX   XX   @dbkt S-[  @dbrc XX
+  \    S--  S-4  grv  XX   XX   XX   XX   S-\  S-grv S-/  / 
+  XX   XX   bspc           XX             ret  XX   XX
+)
+
+(deflayer symbols2
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   S-,  S-.  @fstr XX  XX   XX   XX   XX   S-1  S-7  S-3  XX 
+  S-8  S-=  S-2  -    XX   XX   XX   XX   S-5  ;    S-/  S-6  
+  XX   XX   bspc           XX             ret XX   XX
+)
+
+(deflayer system
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   esc  lmet pgup XX   XX   XX   XX   XX   @vcx up   del  XX 
+  bspc tab  A-tab pgdn XX  XX   XX   XX   left down right ret 
+  XX   XX   @to_neo        XX             @mt_sys   XX   XX
+)
